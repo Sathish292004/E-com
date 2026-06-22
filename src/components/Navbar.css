@@ -1,0 +1,260 @@
+.sk-navbar{
+  height:80px;
+  background:#ffffff;
+  border-bottom:1px solid #e5e7eb;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+  z-index:999;
+}
+
+.logo{
+  font-size:2rem;
+  font-weight:800;
+  color:#111827 !important;
+  text-decoration:none;
+}
+
+.logo span{
+  color:#2563eb;
+}
+
+.nav-link{
+  color:#4b5563 !important;
+  font-weight:600;
+  margin:0 8px;
+  transition:.3s;
+}
+
+.nav-link:hover{
+  color:#2563eb !important;
+}
+
+.sk-search{
+  width:420px;
+  border:2px solid #e5e7eb;
+  border-radius:14px;
+  overflow:hidden;
+  background:white;
+}
+
+.sk-search input{
+  background:transparent;
+  height:46px;
+}
+
+.sk-search input:focus{
+  box-shadow:none;
+}
+
+.sk-search button{
+  width:55px;
+  border:none;
+  border-radius:0;
+}
+
+.btn-dark{
+  background:#1f2937 !important;
+  border:none !important;
+}
+
+.btn-dark:hover{
+  background:#111827 !important;
+}
+
+.navbar-toggler{
+  box-shadow:none !important;
+}
+
+@media(max-width:991px){
+
+  .sk-navbar{
+    height:auto;
+    padding:12px 0;
+  }
+
+  .navbar-collapse{
+    background:#fff;
+    margin-top:15px;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+  }
+
+  .nav-link{
+    padding:12px 0 !important;
+    margin:0;
+  }
+
+  .sk-search{
+    width:100%;
+    margin-top:15px;
+  }
+
+  .btn-dark.rounded-pill{
+    width:100%;
+    justify-content:center;
+  }
+}
+
+@media(max-width:576px){
+
+  .logo{
+    font-size:1.7rem;
+  }
+
+  .container-fluid{
+    padding-left:15px !important;
+    padding-right:15px !important;
+  }
+
+  .sk-search input{
+    font-size:.95rem;
+  }
+}
+
+.sk-search-mobile{
+  width:100%;
+  height:55px;
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid #e5e7eb;
+}
+
+.sk-search-mobile input{
+  flex:1;
+  font-size:1rem;
+  padding-left:15px;
+}
+
+.sk-search-mobile button{
+  width:65px;
+  border-radius:0;
+}
+
+@media (max-width: 991px){
+
+  .navbar-collapse{
+    background:#fff;
+    padding:15px;
+    margin-top:10px;
+    border-radius:16px;
+  }
+
+  .sk-search{
+    display:none !important;
+  }
+
+}
+
+
+/* =========================
+   THEME BUTTON
+========================= */
+
+.theme-btn{
+  border:none !important;
+  background:transparent !important;
+  font-size:1.4rem;
+  cursor:pointer;
+  padding:0;
+}
+
+/* Light Mode */
+body.light-theme .theme-btn{
+  color:#111827 !important;
+}
+
+/* Dark Mode */
+body.dark-theme .theme-btn{
+  color:#facc15 !important;
+}
+
+/* Mobile Header */
+.mobile-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* =========================
+   DARK NAVBAR
+========================= */
+
+body.dark-theme .sk-navbar{
+  background:#0f172a !important;
+  border-bottom:1px solid #1e293b;
+}
+
+body.dark-theme .logo{
+  color:white !important;
+}
+
+body.dark-theme .nav-link{
+  color:#e2e8f0 !important;
+}
+
+body.dark-theme .nav-link:hover{
+  color:#60a5fa !important;
+}
+
+/* Mobile Menu */
+
+body.dark-theme .navbar-collapse{
+  background:#1e293b !important;
+}
+
+body.dark-theme .sk-search-mobile{
+  background:#334155 !important;
+  border-color:#475569 !important;
+}
+
+body.dark-theme .sk-search-mobile input{
+  color:white !important;
+}
+
+body.dark-theme .sk-search-mobile input::placeholder{
+  color:#cbd5e1 !important;
+}
+
+/* Desktop Search */
+
+body.dark-theme .sk-search{
+  background:#334155 !important;
+  border-color:#475569 !important;
+}
+
+body.dark-theme .sk-search input{
+  color:white !important;
+}
+
+body.dark-theme .sk-search input::placeholder{
+  color:#cbd5e1 !important;
+}
+
+/* Home Background */
+
+body.dark-theme{
+  background:#0f172a !important;
+}
+
+body.dark-theme .products-section{
+  background:#0f172a !important;
+}
+
+body.dark-theme .section-title{
+  color:white !important;
+}
+
+body.dark-theme .product-card{
+  background:#1e293b !important;
+  border:1px solid #334155 !important;
+}
+
+body.dark-theme .product-name,
+body.dark-theme .product-price{
+  color:white !important;
+}
+
+body.dark-theme .product-brand{
+  color:#94a3b8 !important;
+}
