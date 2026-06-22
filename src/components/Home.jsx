@@ -158,8 +158,7 @@ const Home = ({ selectedCategory }) => {
             </h2>
 
             <p className="section-subtitle">
-              Premium gadgets, laptops,
-              smartphones and accessories
+              Add your first product
             </p>
 
           </div>
