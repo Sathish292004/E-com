@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 
 const AddProduct = () => {
   const navigate = useNavigate();
-  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   const [loading, setLoading] = useState(false);
 
@@ -33,15 +32,11 @@ const AddProduct = () => {
   ];
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } =
-      e.target;
+    const { name, value, type, checked } = e.target;
 
     setProduct({
       ...product,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -55,65 +50,50 @@ const AddProduct = () => {
     const reader = new FileReader();
 
     reader.onload = (event) => {
-      setImagePreview(
-        event.target.result
-      );
+      setImagePreview(event.target.result);
     };
 
     reader.readAsDataURL(file);
   };
 
-  const submitHandler = async (
-    event
-  ) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
 
     try {
       setLoading(true);
 
-      const formData =
-        new FormData();
+      const formData = new FormData();
+
+      formData.append("imageFile", image);
 
       formData.append(
-        "imageFile",
-        image
-      );
-
-      formData.append(
-        "product",
-        new Blob(
-          [
-            JSON.stringify(
-              product
-            ),
-          ],
-          {
+          "product",
+          new Blob([JSON.stringify(product)], {
             type: "application/json",
+          })
+      );
+
+      const response = await axios.post(
+          "https://e-com-backend-eufc.onrender.com/api/product",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        )
       );
 
-      await axios.post(
-        `${baseUrl}/api/product`,
-        formData,
-        {
-          headers: {
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
-      );
+      console.log("SUCCESS:", response.data);
 
-      toast.success(
-        "Product Added Successfully"
-      );
+      toast.success("Product Added Successfully");
 
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error("FULL ERROR:", error);
+      console.error("RESPONSE:", error.response);
 
       toast.error(
-        "Failed To Add Product"
+          error?.response?.data || "Failed To Add Product"
       );
     } finally {
       setLoading(false);
@@ -121,348 +101,222 @@ const AddProduct = () => {
   };
 
   return (
-    <section
-      style={{
-        marginTop: "110px",
-        paddingBottom: "80px",
-      }}
-    >
-      <div className="container">
-
-        {/* Header */}
-
-        <div className="text-center mb-5">
-
+      <section
+          style={{
+            marginTop: "110px",
+            paddingBottom: "80px",
+          }}
+      >
+        <div className="container">
+          <div className="text-center mb-5">
           <span className="badge bg-dark px-4 py-2 mb-3">
             SK STORE ADMIN
           </span>
 
-          <h1
-            className="fw-bold"
-            style={{
-              fontSize: "3rem",
-            }}
-          >
-            Add New Product
-          </h1>
-
-          <p className="text-muted">
-            Create premium product
-            listings for your store
-          </p>
-
-        </div>
-
-        <div className="row g-5">
-
-          {/* LEFT */}
-
-          <div className="col-12">
-
-            <div
-              className="bg-white p-5 ms-auto"
-              style={{
-                borderRadius: "30px",
-                boxShadow:
-                  "0 20px 50px rgba(0,0,0,0.08)",
-                  
-              }}
+            <h1
+                className="fw-bold"
+                style={{
+                  fontSize: "3rem",
+                }}
             >
-              <form
-                onSubmit={
-                  submitHandler
-                }
-              >
-                <div className="row g-4">
+              Add New Product
+            </h1>
 
-                  <div className="col-md-6">
-                    <label className="form-label fw-semibold">
-                      Product Name
-                    </label>
+            <p className="text-muted">
+              Create premium product listings for your store
+            </p>
+          </div>
 
-                    <input
-                      type="text"
-                      name="name"
-                      className="form-control"
-                      value={
-                        product.name
-                      }
-                      onChange={
-                        handleInputChange
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="col-md-6">
-                    <label className="form-label fw-semibold">
-                      Brand
-                    </label>
-
-                    <input
-                      type="text"
-                      name="brand"
-                      className="form-control"
-                      value={
-                        product.brand
-                      }
-                      onChange={
-                        handleInputChange
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="col-12">
-                    <label className="form-label fw-semibold">
-                      Description
-                    </label>
-
-                    <textarea
-                      rows="5"
-                      name="description"
-                      className="form-control"
-                      value={
-                        product.description
-                      }
-                      onChange={
-                        handleInputChange
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="col-md-4">
-                    <label className="form-label fw-semibold">
-                      Price
-                    </label>
-
-                    <input
-                      type="number"
-                      name="price"
-                      className="form-control"
-                      value={
-                        product.price
-                      }
-                      onChange={
-                        handleInputChange
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="col-md-4">
-                    <label className="form-label fw-semibold">
-                      Category
-                    </label>
-
-                    <select
-                      className="form-select"
-                      name="category"
-                      value={
-                        product.category
-                      }
-                      onChange={
-                        handleInputChange
-                      }
-                      required
-                    >
-                      <option value="">
-                        Select
-                        Category
-                      </option>
-
-                      {categories.map(
-                        (
-                          category
-                        ) => (
-                          <option
-                            key={
-                              category
-                            }
-                            value={
-                              category
-                            }
-                          >
-                            {
-                              category
-                            }
-                          </option>
-                        )
-                      )}
-                    </select>
-                  </div>
-
-                  <div className="col-md-4">
-                    <label className="form-label fw-semibold">
-                      Stock
-                    </label>
-
-                    <input
-                      type="number"
-                      name="stockQuantity"
-                      className="form-control"
-                      value={
-                        product.stockQuantity
-                      }
-                      onChange={
-                        handleInputChange
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="col-md-6">
-                    <label className="form-label fw-semibold">
-                      Release Date
-                    </label>
-
-                    <input
-                      type="date"
-                      name="releaseDate"
-                      className="form-control"
-                      value={
-                        product.releaseDate
-                      }
-                      onChange={
-                        handleInputChange
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="col-md-6 d-flex align-items-center">
-                    <div className="form-check mt-4">
-
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        name="productAvailable"
-                        checked={
-                          product.productAvailable
-                        }
-                        onChange={
-                          handleInputChange
-                        }
-                      />
-
-                      <label className="form-check-label">
-                        Product
-                        Available
-                      </label>
-
-                    </div>
-                  </div>
-
-                  <div className="col-12">
-                    <label className="form-label fw-semibold">
-                      Product Image
-                    </label>
-
-                    <input
-                      type="file"
-                      className="form-control"
-                      accept="image/*"
-                      onChange={
-                        handleImageChange
-                      }
-                      required
-                    />
-                  </div>
-
-                  <div className="col-12 mt-4">
-
-
-                <div
-                  className="bg-white p-4 mx-auto"
+          <div className="row">
+            <div className="col-12">
+              <div
+                  className="bg-white p-5"
                   style={{
                     borderRadius: "30px",
-                    boxShadow: "0 20px 50px rgba(0,0,0,0.08)",
-                    maxWidth: "650px"
-                 }}
-            >
-              <h4 className="fw-bold mb-4">
-                Live Preview
-              </h4>
-
-              <div
-                className="text-center"
+                    boxShadow:
+                        "0 20px 50px rgba(0,0,0,0.08)",
+                  }}
               >
-                {imagePreview ? (
-                  <img
-                    src={
-                      imagePreview
-                    }
-                    alt="preview"
-                    className="img-fluid rounded-4"
-                    style={{
-                      maxHeight:
-                        "280px",
-                      objectFit:
-                        "cover",
-                    }}
-                  />
-                ) : (
-                  <div
-                    className="d-flex align-items-center justify-content-center bg-light rounded-4"
-                    style={{
-                      height:
-                        "280px",
-                    }}
-                  >
-                    <span className="text-muted">
-                      Upload Image
-                    </span>
+                <form onSubmit={submitHandler}>
+                  <div className="row g-4">
+                    <div className="col-md-6">
+                      <label className="form-label fw-semibold">
+                        Product Name
+                      </label>
+
+                      <input
+                          type="text"
+                          name="name"
+                          className="form-control"
+                          value={product.name}
+                          onChange={handleInputChange}
+                          required
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label fw-semibold">
+                        Brand
+                      </label>
+
+                      <input
+                          type="text"
+                          name="brand"
+                          className="form-control"
+                          value={product.brand}
+                          onChange={handleInputChange}
+                          required
+                      />
+                    </div>
+
+                    <div className="col-12">
+                      <label className="form-label fw-semibold">
+                        Description
+                      </label>
+
+                      <textarea
+                          rows="5"
+                          name="description"
+                          className="form-control"
+                          value={product.description}
+                          onChange={handleInputChange}
+                          required
+                      />
+                    </div>
+
+                    <div className="col-md-4">
+                      <label className="form-label fw-semibold">
+                        Price
+                      </label>
+
+                      <input
+                          type="number"
+                          name="price"
+                          className="form-control"
+                          value={product.price}
+                          onChange={handleInputChange}
+                          required
+                      />
+                    </div>
+
+                    <div className="col-md-4">
+                      <label className="form-label fw-semibold">
+                        Category
+                      </label>
+
+                      <select
+                          className="form-select"
+                          name="category"
+                          value={product.category}
+                          onChange={handleInputChange}
+                          required
+                      >
+                        <option value="">
+                          Select Category
+                        </option>
+
+                        {categories.map((category) => (
+                            <option
+                                key={category}
+                                value={category}
+                            >
+                              {category}
+                            </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="col-md-4">
+                      <label className="form-label fw-semibold">
+                        Stock
+                      </label>
+
+                      <input
+                          type="number"
+                          name="stockQuantity"
+                          className="form-control"
+                          value={product.stockQuantity}
+                          onChange={handleInputChange}
+                          required
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label fw-semibold">
+                        Release Date
+                      </label>
+
+                      <input
+                          type="date"
+                          name="releaseDate"
+                          className="form-control"
+                          value={product.releaseDate}
+                          onChange={handleInputChange}
+                          required
+                      />
+                    </div>
+
+                    <div className="col-md-6 d-flex align-items-center">
+                      <div className="form-check mt-4">
+                        <input
+                            type="checkbox"
+                            className="form-check-input"
+                            name="productAvailable"
+                            checked={product.productAvailable}
+                            onChange={handleInputChange}
+                        />
+
+                        <label className="form-check-label">
+                          Product Available
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="col-12">
+                      <label className="form-label fw-semibold">
+                        Product Image
+                      </label>
+
+                      <input
+                          type="file"
+                          className="form-control"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          required
+                      />
+                    </div>
+
+                    {imagePreview && (
+                        <div className="col-12 text-center">
+                          <img
+                              src={imagePreview}
+                              alt="preview"
+                              className="img-fluid rounded-4"
+                              style={{
+                                maxHeight: "280px",
+                                objectFit: "cover",
+                              }}
+                          />
+                        </div>
+                    )}
+
+                    <div className="col-12">
+                      <button
+                          type="submit"
+                          className="btn btn-dark btn-lg rounded-pill w-100"
+                      >
+                        {loading
+                            ? "Uploading..."
+                            : "Add Product"}
+                      </button>
+                    </div>
                   </div>
-                )}
-
-                <h5 className="mt-4 fw-bold">
-                  {product.name ||
-                    "Product Name"}
-                </h5>
-
-                <p className="text-muted">
-                  {product.brand ||
-                    "Brand"}
-                </p>
-
-                <h4 className="fw-bold">
-                  ₹
-                  {product.price ||
-                    "0"}
-                </h4>
+                </form>
               </div>
-
             </div>
-
           </div>
-                    <button
-                        type="submit"
-                        className="btn btn-dark btn-lg rounded-pill mx-auto d-block"
-                        style={{
-                          maxWidth: "650px",
-                          width: "100%"
-                        }}
-                    >
-                      
-                      {loading
-                        ? "Uploading..."
-                        : "Add Product"}
-                    </button>
-
-                  </div>
-
-                
-              </form>
-            </div>
-
-          </div>
-
-      
-
         </div>
-      </div>
-    </section>
+      </section>
   );
 };
 
